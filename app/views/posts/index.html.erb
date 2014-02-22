@@ -1,0 +1,41 @@
+<h1>Posts</h1>
+
+<%= render "shared/form_errors", record: @post %>
+<% if user_signed_in? %>
+<div>
+  <div class="row">
+   <div class="col-lg-6">
+    <div class="input-group">
+      <%= form_for @post  do |f| %>
+        <%= f.text_area :content, class: "form-control", placeholder: "Write a new post" %>
+        <span class="input-group-btn">
+          <%= f.submit "Post", class: "btn btn-default" %>
+        </span>
+      <% end %>
+
+      
+    </div><!-- /input-group -->
+  </div><!-- /.col-lg-6 -->
+
+      
+    </div>
+  </div>
+</div>
+<% end %>
+<ul  class="list-group">
+  <% @posts.each do |post| %>
+    <li class="list-group-item">
+      <div class="row">
+        <div class="col-md-1"><%= link_to gravatar_for(post.user), post.user, class: "gravatar" %></div>
+        <div class="col-md-10">
+          <%= link_to post.user.email, post.user, class: "user" %> : 
+          <%= content_tag :span, post.content, class: "content" %><br/>
+          <small><%= content_tag :span, "Posted #{time_ago_in_words(post.created_at)} ago", class: "timestamp" %></small>
+        </div>
+        <div calss="col-md-1">
+          <%= link_to "delete", post, class: "delete", method: :delete, confirm: "Are you sure?" if not current_user.nil? and current_user == post.user %>
+        </div>
+    </li>
+  <% end %>
+</ul>
+        
